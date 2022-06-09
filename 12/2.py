@@ -1,3 +1,4 @@
+# Second Code
 
 vowelCount = 0
 consoCount = 0
