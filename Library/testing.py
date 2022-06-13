@@ -11,7 +11,8 @@ main.geometry('850x700')
 
 cols = ('name', 'sex', 'age')
 table = t.Treeview(main, columns=cols, show='headings', height=19)
-table.place(x=30, y=30)
+#table.place(x=30, y=30)
+table.grid(row=0, column=0, sticky='ns', padx=5, pady=5)
 
 # define headings:
 table.heading('name', text='Name')
@@ -51,8 +52,15 @@ table.insert("", 'end', text="L13",
              values=("Suman", "F", "30"))
 
 
-btn = t.Button(main, text='Click')
-btn.place(x=130, y=300)
+#btn = t.Button(main, text='Click')
+#btn.place(x=400, y=250)
+
+
+# scrollbar creation
+scrollbar = t.Scrollbar(main, orient='vertical', command=table.yview)
+table.configure(yscroll=scrollbar.set)
+#scrollbar.place(x=331, y=30)
+#scrollbar.grid(row=0, column=0, sticky='ns')
 
 
 main.mainloop()
