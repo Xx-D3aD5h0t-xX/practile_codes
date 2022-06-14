@@ -1,1 +1,5 @@
 create a table for history.
+
+https://stackoverflow.com/questions/61020096/auto-trigger-a-mysql-query-every-day-at-specific-time
+
+https://www.mysqltutorial.org/create-the-first-trigger-in-mysql.aspx
