@@ -1,13 +1,15 @@
 from datetime import datetime as dt
-# 15 6 
-x = '2022-06-09'
+x = '2022-06-01'
 
-def datecalc(lent, curmon, curdate):
+
+def datecalc(lent):
     dadd = 0
     lent_month = int(lent[5:7])
     lent_day = int(lent[8:])
+    curmon = dt.now().month
+    curdate = dt.now().day
+
     for i in range(lent_month, curmon):
-        
 
         if i == 2:
             dadd += 28
@@ -25,12 +27,9 @@ def datecalc(lent, curmon, curdate):
             dadd += 30
         else:
             dadd += 31
-    
-        curdate = curdate + dadd
-        return( curdate - lent_day)
-    
-monthnow = dt.now().month
-print(monthnow)
-daynow = dt.now().day
 
-print(datecalc(x, monthnow, daynow ))
+    curdate = curdate + dadd
+    return(curdate - lent_day)
+
+
+print(datecalc(x))
