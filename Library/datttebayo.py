@@ -1,5 +1,5 @@
 from datetime import datetime as dt
-x = '2022-06-01'
+x = '2022-01-08'
 
 
 def datecalc(lent):
@@ -8,11 +8,15 @@ def datecalc(lent):
     lent_day = int(lent[8:])
     curmon = dt.now().month
     curdate = dt.now().day
+    curyear = dt.now().year
 
     for i in range(lent_month, curmon):
 
         if i == 2:
-            dadd += 28
+            if (curyear % 4 == 0 and curyear % 100 != 0) or curyear % 400 == 0:
+                dadd += 29
+            else:
+                dadd += 28
         elif i == 8:
             dadd += 31
         elif i == 9:
