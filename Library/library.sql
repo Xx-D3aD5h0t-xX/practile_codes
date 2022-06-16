@@ -16,11 +16,11 @@ drop TABLE lib_table;
 
 create table lib_table(
     Book_No int(6) PRIMARY KEY,
-    Book_Title VARCHAR(50),
-    Author VARCHAR(30),
-    Publisher VARCHAR(30),
+    Book_Title VARCHAR(80),
+    Author VARCHAR(60),
+    Publisher VARCHAR(60),
     year VARCHAR(4),
-    Type VARCHAR(15),
+    Type VARCHAR(40),
     Price DECIMAL(6, 2)
 );
 

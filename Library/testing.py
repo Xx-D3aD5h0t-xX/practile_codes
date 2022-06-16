@@ -3,7 +3,7 @@ from tkinter import ttk as t
 import mysql.connector as sql
 from ttkthemes import ThemedTk
 
-
+# Success (x23)
 main = ThemedTk(theme='arc')
 main.title('Library')
 main.geometry('850x700')
