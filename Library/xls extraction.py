@@ -2,14 +2,15 @@ import pandas as pd
 import mysql.connector
 
 db = mysql.connector.connect(
-    host='localhost', user='root', password='negus', db='library')
+    host='localhost', user='root', password='root', db='library')
 
 cur = db.cursor()
 
 
 obj = pd.ExcelFile(r'.\Library\libdata.xls')
 txtfile = open(r'Sheet1.txt', 'w')
-ore = pd.read_excel(r'.\Library\libdata.xls', sheet_name='Sheet2')
+#file_loc = r"C:\Users\St. Mary's Lab\Desktop\Git Repos\practile_codes\Library\libdata.xls"
+ore = pd.read_excel(r'Library\\libdata.xls', sheet_name='Sheet2')
 '''x = list(ore.values[836])
 print(x)
 print(type(x))
