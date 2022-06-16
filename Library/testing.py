@@ -3,8 +3,8 @@ from tkinter import ttk as t
 import mysql.connector
 from ttkthemes import ThemedTk
 
-# Success (x23)
-main = ThemedTk(theme='arc')
+
+main = ThemedTk(theme='breeze')
 main.title('Library')
 main.geometry('850x700')
 
@@ -18,7 +18,7 @@ cur.execute('select * from lib_table;')
 cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type')
 table = t.Treeview(main, columns=cols, show='headings', height=19)
 #table.place(x=30, y=30)
-table.grid(row=0, column=0, sticky='ns', padx=5, pady=5)
+table.place(x=40, y=40)
 
 # define headings:
 table.heading('bookno', text='Book_No')
@@ -39,19 +39,10 @@ for x in cur:
     table.insert('', 'end', values=(x[0], x[1], x[2], x[3], x[4], x[5]))
 
 
-# table.insert('', 'end',
-#             values=('Jai', "M", '17'))
-
-
-#btn = t.Button(main, text='Click')
-#btn.place(x=400, y=250)
-
-
 # scrollbar creation
 scrollbar = t.Scrollbar(main, orient='vertical', command=table.yview)
 table.configure(yscroll=scrollbar.set)
-#scrollbar.place(x=331, y=30)
-scrollbar.grid(row=0, column=1, sticky='ns')
+scrollbar.place(x=810, y=41, height=439)
 
 
 main.mainloop()
