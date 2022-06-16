@@ -1,6 +1,6 @@
 from multiprocessing import set_forkserver_preload
 from tkinter import ttk as t
-import mysql.connector as sql
+import mysql.connector
 from ttkthemes import ThemedTk
 
 # Success (x23)
@@ -8,48 +8,39 @@ main = ThemedTk(theme='arc')
 main.title('Library')
 main.geometry('850x700')
 
+db = mysql.connector.connect(
+    host='localhost', user='root', password='negus', db='library')
 
-cols = ('name', 'sex', 'age')
+cur = db.cursor()
+cur.execute('select * from lib_table;')
+
+
+cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type')
 table = t.Treeview(main, columns=cols, show='headings', height=19)
 #table.place(x=30, y=30)
 table.grid(row=0, column=0, sticky='ns', padx=5, pady=5)
 
 # define headings:
-table.heading('name', text='Name')
-table.heading('sex', text='Sex')
-table.heading('age', text='Age')
-table.column('name', width=90)
-table.column('sex', width=90)
-table.column('age', width=90)
+table.heading('bookno', text='Book_No')
+table.heading('booktit', text='Book_Title')
+table.heading('author', text='Author')
+table.heading('publisher', text='Publisher')
+table.heading('year', text='Year')
+table.heading('type', text='Type')
+
+table.column('bookno', width=60)
+table.column('booktit', width=200)
+table.column('author', width=150)
+table.column('publisher', width=150)
+table.column('year', width=50)
+table.column('type', width=130)
+
+for x in cur:
+    table.insert('', 'end', values=(x[0], x[1], x[2], x[3], x[4], x[5]))
 
 
-table.insert('', 'end',
-             values=('Jai', "M", '17'))
-
-table.insert("", 'end', text="L1",
-             values=("Nidhi", "F", "25"))
-table.insert("", 'end', text="L2",
-             values=("Nisha", "F", "23"))
-table.insert("", 'end', text="L3",
-             values=("Preeti", "F", "27"))
-table.insert("", 'end', text="L4",
-             values=("Rahul", "M", "20"))
-table.insert("", 'end', text="L5",
-             values=("Sonu", "F", "18"))
-table.insert("", 'end', text="L6",
-             values=("Rohit", "M", "19"))
-table.insert("", 'end', text="L7",
-             values=("Geeta", "F", "25"))
-table.insert("", 'end', text="L8",
-             values=("Ankit", "M", "22"))
-table.insert("", 'end', text="L10",
-             values=("Mukul", "F", "25"))
-table.insert("", 'end', text="L11",
-             values=("Mohit", "M", "16"))
-table.insert("", 'end', text="L12",
-             values=("Vivek", "M", "22"))
-table.insert("", 'end', text="L13",
-             values=("Suman", "F", "30"))
+# table.insert('', 'end',
+#             values=('Jai', "M", '17'))
 
 
 #btn = t.Button(main, text='Click')
@@ -60,7 +51,7 @@ table.insert("", 'end', text="L13",
 scrollbar = t.Scrollbar(main, orient='vertical', command=table.yview)
 table.configure(yscroll=scrollbar.set)
 #scrollbar.place(x=331, y=30)
-#scrollbar.grid(row=0, column=0, sticky='ns')
+scrollbar.grid(row=0, column=1, sticky='ns')
 
 
 main.mainloop()
