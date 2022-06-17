@@ -1,10 +1,12 @@
-from multiprocessing import set_forkserver_preload
 from tkinter import ttk as t
 import mysql.connector
-from ttkthemes import ThemedTk
+import tkinter as tk
 
 
-main = ThemedTk(theme='breeze')
+main = tk.Tk()
+main.tk.call("source", r".\\library\\azure.tcl")
+main.tk.call("set_theme", "dark")
+
 main.title('Library')
 main.geometry('850x700')
 
@@ -18,7 +20,7 @@ cur.execute('select * from lib_table;')
 cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type')
 table = t.Treeview(main, columns=cols, show='headings', height=19)
 #table.place(x=30, y=30)
-table.place(x=40, y=40)
+table.place(x=25, y=40)
 
 # define headings:
 table.heading('bookno', text='Book_No')
@@ -42,7 +44,7 @@ for x in cur:
 # scrollbar creation
 scrollbar = t.Scrollbar(main, orient='vertical', command=table.yview)
 table.configure(yscroll=scrollbar.set)
-scrollbar.place(x=810, y=41, height=439)
+scrollbar.place(x=815, y=41, height=439)
 
 
 main.mainloop()
