@@ -4,7 +4,7 @@ import tkinter as tk
 import pyglet
 
 # DE FUNC NOT USING TKINTER:
-
+old_bookno = 0
 
 main = tk.Tk()
 main.tk.call("source", r".\\library\\azure.tcl")
@@ -132,9 +132,6 @@ tot_l3 = t.Label(totbkframe, font=('Oswald', 14))
 tot_l3.grid(row=2, column=0, sticky='nsew')
 
 
-# TREEVIEW FUNCTIONS
-
-
 # FUNCTIONS
 
 
@@ -142,28 +139,6 @@ def count_update():
     cur.execute('select count(*) from lib_table;')
     for x in cur:
         tot_l3.configure(text=x)
-
-
-def idk():
-    if e_type.get() == '':
-        print('NOTHING AT ALL NIGGER')
-        cur.execute('select * from lib_table;')
-        for y in table.get_children():
-            table.delete(y)
-        for x in cur:
-            table.insert('', 'end', values=(
-                x[0], x[1], x[2], x[3], x[4], x[5]))
-        count_update()
-
-    else:
-        print('Fk this shit nigger')
-        cur.execute('select * from lib_table where year = "1972";')
-        for y in table.get_children():
-            table.delete(y)
-        for x in cur:
-            table.insert('', 'end', values=(
-                x[0], x[1], x[2], x[3], x[4], x[5]))
-        count_update()
 
 
 def search():
@@ -207,12 +182,83 @@ def search():
     count_update()
 
 
+def sel_ent(event):
+    global old_bookno
+    for i in table.selection():
+        item = table.item(i)
+        entry = item['values']
+
+        # deleting
+        e_bookno.delete(0, 'end')
+        e_booktit.delete(0, 'end')
+        e_author.delete(0, 'end')
+        e_publish.delete(0, 'end')
+        e_year.delete(0, 'end')
+        e_type.delete(0, 'end')
+
+        # appending
+        e_bookno.insert('end', entry[0])
+        e_booktit.insert('end', entry[1])
+        e_author.insert('end', entry[2])
+        e_publish.insert('end', entry[3])
+        e_year.insert('end', entry[4])
+        e_type.insert('end', entry[5])
+        old_bookno = entry[0]
+        print(old_bookno)
+
+
 def update():
+    ext = ''
+    global old_bookno
     query = 'update lib_table set'
+    og_query = query
+
+    if old_bookno == 0:
+        print('nothing to run')
+    else:
+        if str(e_bookno.get()) != '':
+            ext = ext + f', Book_No = {int(e_bookno.get())}'
+        if e_booktit.get() != '':
+            ext = ext + f', Book_Title = "{e_booktit.get()}"'
+        if e_author.get() != '':
+            ext = ext + f', Author = "{e_author.get()}"'
+        if e_publish.get() != '':
+            ext = ext + f', Publisher = "{e_publish.get()}"'
+        if e_year.get() != '':
+            ext = ext + f', year = "{e_year.get()}"'
+        if e_type.get() != '':
+            ext = ext + f', Type = "{e_type.get()}"'
+
+        # str modification
+        query = query + ext + f' where Book_No = {old_bookno}'
+        old_bookno = 0
+        if query == og_query:
+            print('nothing to do')
+        else:
+            query_list = query.split()
+            field = query_list[2]
+            query_list[2] = field[:3]
+            query = ' '.join(query_list)
+            query = query + ';'
+            print(query)
+            cur.execute(query)
+            db.commit()
+            cur.execute('select * from lib_table;')
+            for y in table.get_children():
+                table.delete(y)
+            for x in cur:
+                table.insert('', 'end', values=(
+                    x[0], x[1], x[2], x[3], x[4], x[5]))
+            count_update()
 
 
 # CONFIGUATIONS
 search_btn.configure(command=search)
+update_btn.configure(command=update)
+
+
+# TREEVIEW FUNCTIONS
+table.bind('<<TreeviewSelect>>', sel_ent)
 
 
 # Styles
