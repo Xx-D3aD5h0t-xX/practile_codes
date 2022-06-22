@@ -78,7 +78,7 @@ scrollbar.pack(side="right", fill="y")
 
 
 # table creation
-cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type')
+cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type', 'price')
 table = t.Treeview(tableFrame, columns=cols, show='headings',
                    height=12, yscrollcommand=scrollbar.set)
 table.pack(expand=True, fill='both')
@@ -94,6 +94,29 @@ totbkframe = t.Labelframe(
 totbkframe.grid(row=1, column=4, sticky='nsew', rowspan=3, columnspan=1)
 
 
+# define headings:
+table.heading('bookno', text='Book_No')
+table.heading('booktit', text='Book_Title')
+table.heading('author', text='Author')
+table.heading('publisher', text='Publisher')
+table.heading('year', text='Year')
+table.heading('type', text='Type')
+table.heading('price', text='Price')
+
+
+table.column('bookno', width=50)
+table.column('booktit', width=200)
+table.column('author', width=150)
+table.column('publisher', width=140)
+table.column('year', width=50)
+table.column('type', width=110)
+table.column('price', width=50)
+
+
+for x in cur:
+    table.insert('', 'end', values=(x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
+
+
 # buttons
 
 
@@ -103,25 +126,6 @@ search_btn.grid(row=1, column=6, ipady=10, ipadx=10,
 
 update_btn = t.Button(main, text='Update', style="big.TButton")
 update_btn.grid(row=3, column=6, ipady=10, ipadx=10)
-
-
-# define headings:
-table.heading('bookno', text='Book_No')
-table.heading('booktit', text='Book_Title')
-table.heading('author', text='Author')
-table.heading('publisher', text='Publisher')
-table.heading('year', text='Year')
-table.heading('type', text='Type')
-
-table.column('bookno', width=60)
-table.column('booktit', width=200)
-table.column('author', width=150)
-table.column('publisher', width=150)
-table.column('year', width=50)
-table.column('type', width=130)
-
-for x in cur:
-    table.insert('', 'end', values=(x[0], x[1], x[2], x[3], x[4], x[5]))
 
 
 tot_l1 = t.Label(totbkframe, text=('Total'), font=('Oswald', 14))
@@ -148,11 +152,21 @@ def search():
     if str(e_bookno.get()) != '':
         ext = ext + f' and Book_No = {int(e_bookno.get())}'
     if e_booktit.get() != '':
-        ext = ext + f' and Book_Title = "{e_booktit.get()}"'
+        if len(e_booktit.get()) == 1:
+            ext = ext + f' and Book_Title like "{e_booktit.get()}%"'
+        else:
+            ext = ext + f' and Book_Title like "%{e_booktit.get()}%"'
     if e_author.get() != '':
-        ext = ext + f' and Author = "{e_author.get()}"'
+        if len(e_author.get()) == 1:
+            ext = ext + f' and Author like "{e_author.get()}%"'
+        else:
+            ext = ext + f' and Author like "%{e_author.get()}%"'
+
     if e_publish.get() != '':
-        ext = ext + f' and Publisher = "{e_publish.get()}"'
+        if len(e_publish.get()) == 1:
+            ext = ext + f' and Publisher like "{e_publish.get()}%"'
+        else:
+            ext = ext + f' and Publisher like "%{e_publish.get()}%"'
     if e_year.get() != '':
         ext = ext + f' and year = "{e_year.get()}"'
     if e_type.get() != '':
