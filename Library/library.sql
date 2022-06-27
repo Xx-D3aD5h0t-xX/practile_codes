@@ -12,8 +12,6 @@ create table daanseva(
     date DATE DEFAULT(curdate())
 );
 
-drop TABLE lib_table;
-
 create table lib_table(
     Book_No int(6) PRIMARY KEY,
     Book_Title VARCHAR(80),
@@ -67,3 +65,7 @@ values
         "Friction",
         "69.00"
     );
+
+delete from lib_table where Book_No = 32069 ;
+
+select * from lib_table where Book_No = 32069;
