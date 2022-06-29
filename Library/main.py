@@ -18,7 +18,7 @@ main.title('Library')
 main.geometry('1100x700')
 
 db = mysql.connector.connect(
-    host='localhost', user='root', password='negus', db='library')
+    host='localhost', user='root', password='root', db='library')
 
 cur = db.cursor()
 cur.execute('select * from lib_table;')
@@ -107,13 +107,13 @@ table.heading('type', text='Type')
 table.heading('price', text='Price')
 
 
-table.column('bookno', width=50)
-table.column('booktit', width=200)
-table.column('author', width=150)
-table.column('publisher', width=140)
-table.column('year', width=50)
-table.column('type', width=110)
-table.column('price', width=50)
+table.column('bookno', width=50, anchor="center")
+table.column('booktit', width=200, anchor="center")
+table.column('author', width=150, anchor="center")
+table.column('publisher', width=140, anchor="center")
+table.column('year', width=50, anchor="center")
+table.column('type', width=110, anchor="center")
+table.column('price', width=50, anchor="center")
 
 
 for x in cur:
@@ -301,13 +301,23 @@ def add_table_func():
     addmain.tk.call("set_theme", "dark")
 
     addmain.title('Addition Window')
-    addmain.geometry('1100x350')
+    addmain.geometry('1100x400')
     add_lbl = t.Label(addmain, text="Enter Your Login Details",
-                      font=('HelveticaNeue', 42))
+                      font=('HelveticaNeue', 35))
     add_lbl.grid(row=0, column=0, sticky=('nsew'), padx=30, pady=(30, 30))
 
-    btn = t.Button(addmain, text='click', style="big.TButton")
+
+    frame = t.Labelframe(addmain,text='joe')
+    frame.grid(row=1,column=0, sticky=('nsew'),ipady = 30,rowspan = 4)
+
+    btn = t.Button(frame, text='click', style="big.TButton")
+    btn.grid(row=0, column=0, ipady=10, ipadx=10)
+    btn = t.Button(frame, text='click', style="big.TButton")
     btn.grid(row=1, column=0, ipady=10, ipadx=10)
+    btn = t.Button(frame, text='click', style="big.TButton")
+    btn.grid(row=2, column=0, ipady=10, ipadx=10)
+    btn = t.Button(frame, text='click', style="big.TButton")
+    btn.grid(row=3, column=0, ipady=10, ipadx=10)
 
     def onClick():
         try:
@@ -322,7 +332,7 @@ def add_table_func():
             addmain.destroy()
 
     # config
-    btn.configure(command=onClick)
+    
     addmain.mainloop()
 
 
