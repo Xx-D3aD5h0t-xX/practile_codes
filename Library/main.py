@@ -1,27 +1,31 @@
-from tkinter import Label, font, ttk as t
+from tkinter import Button, Label, font, ttk as t
 import mysql.connector
 import tkinter as tk
 import pyglet
 import sys
+from tkinter import messagebox
+
 
 
 # DE FUNC NOT USING TKINTER:
 old_bookno = 0
 
+
 # Main tk window init
 main = tk.Tk()
 main.tk.call("source", r".\\library\\azure.tcl")
 main.tk.call("set_theme", "dark")
-style = t.Style()
+style = t.Style(master=main)
 
 main.title('Library')
 main.geometry('1100x700')
 
 db = mysql.connector.connect(
-    host='localhost', user='root', password='root', db='library')
+    host='localhost', user='root', password='negus', db='library')
 
 cur = db.cursor()
 cur.execute('select * from lib_table;')
+
 
 # main.rowconfigure(index=0, weight=1)
 # main.rowconfigure(index=1, weight=1)
@@ -291,6 +295,7 @@ def clear():
     e_type.delete(0, 'end')
     search()
     # hardcoding sum shit cos me dumb to do it the right way
+    # fk this shit, this is the right way..
     old_bookno = 0
 
 
@@ -300,39 +305,150 @@ def add_table_func():
     addmain.tk.call("source", r".\\library\\azure.tcl")
     addmain.tk.call("set_theme", "dark")
 
+    # checkbutton vars
+    check_bookno = tk.IntVar(master=addmain, value=0)
+    check_author = tk.IntVar(master=addmain)
+    check_publish = tk.IntVar(master=addmain)
+    check_year = tk.IntVar(master=addmain)
+    check_type = tk.IntVar(master=addmain)
+    check_price =tk.IntVar(master=addmain)
+
+  
     addmain.title('Addition Window')
-    addmain.geometry('1100x400')
-    add_lbl = t.Label(addmain, text="Enter Your Login Details",
+    addmain.geometry('1070x370')
+    style = t.Style(master=addmain)
+    addmain.resizable(False, False)
+
+
+
+    add_lbl = t.Label(addmain, text="Add Entries:",
                       font=('HelveticaNeue', 35))
     add_lbl.grid(row=0, column=0, sticky=('nsew'), padx=30, pady=(30, 30))
 
+    frame = t.Labelframe(addmain, text='joe', padding=(10, 10, 10, 10))
+    frame.grid(row=1, column=0, padx=(50, 0), sticky=(
+        'nsew'), rowspan=4, columnspan=6)
 
-    frame = t.Labelframe(addmain,text='joe')
-    frame.grid(row=1,column=0, sticky=('nsew'),ipady = 30,rowspan = 4)
+    # entry widgets
 
-    btn = t.Button(frame, text='click', style="big.TButton")
-    btn.grid(row=0, column=0, ipady=10, ipadx=10)
-    btn = t.Button(frame, text='click', style="big.TButton")
-    btn.grid(row=1, column=0, ipady=10, ipadx=10)
-    btn = t.Button(frame, text='click', style="big.TButton")
-    btn.grid(row=2, column=0, ipady=10, ipadx=10)
-    btn = t.Button(frame, text='click', style="big.TButton")
-    btn.grid(row=3, column=0, ipady=10, ipadx=10)
+    bktitframe = t.Frame(frame)
+    bktitframe.grid(row=0, column=0, rowspan=1, columnspan=6, pady=(0, 10))
+    la_booktit = t.Label(bktitframe, text="Book Title:")
+    la_booktit.grid(row=0, column=0)
+    ea_booktit = t.Entry(bktitframe, width=90)
+    ea_booktit.grid(row=0, column=1, padx=(10, 0), sticky='nsew')
 
-    def onClick():
-        try:
-            cur.execute(
-                '''insert into lib_table values (32069, 'emergence', 'mansam', 'tackhiyomi', '2069', 'deep novel', '6.09');''')
-            db.commit()
-            count_update()
-            addmain.destroy()
-        except:
-            print('Book number is not unique')
-            count_update()
-            addmain.destroy()
+    la_bookno = t.Label(frame, text="Book No:")
+    la_bookno.grid(row=1, column=0, sticky='nsew', pady=(10, 0))
+    ea_bookno = t.Entry(frame, width=20)
+    ea_bookno.grid(row=1, column=1, sticky='nsew')
+    ca_bookno = t.Checkbutton(frame, variable=check_bookno, state='disabled')
+    ca_bookno.grid(row=1, column=2)
 
-    # config
-    
+    la_author = t.Label(frame, text="Author:")
+    la_author.grid(row=2, column=0, sticky='nsew', pady=(10, 0))
+    ea_author = t.Entry(frame, width=30)
+    ea_author.grid(row=2, column=1, sticky='nsew', pady=(10, 0))
+    ca_author = t.Checkbutton(frame, variable=check_author, offvalue=0, onvalue=1)
+    ca_author.grid(row=2, column=2, pady=(10, 0))
+
+    la_publish = t.Label(frame, text="Publisher:")
+    la_publish.grid(row=3, column=0, sticky='nsew', pady=(10, 0))
+    ea_publish = t.Entry(frame, width=30)
+    ea_publish.grid(row=3, column=1, sticky='nsew', pady=(10, 0))
+    ca_publish = t.Checkbutton(frame, variable=check_publish, offvalue=0, onvalue=1)
+    ca_publish.grid(row=3, column=2, pady=(10, 0))
+
+    la_year = t.Label(frame, text="Year:")
+    la_year.grid(row=1, column=3, sticky='nsew')
+    ea_year = t.Entry(frame, width=30)
+    ea_year.grid(row=1, column=4, sticky='nsew')
+    ca_year = t.Checkbutton(frame, variable=check_year, offvalue=0, onvalue=1)
+    ca_year.grid(row=1, column=5)
+
+    la_type = t.Label(frame, text="Type:")
+    la_type.grid(row=2, column=3, sticky='nsew', pady=(10, 0))
+    ea_type = t.Entry(frame, width=30)
+    ea_type.grid(row=2, column=4, sticky='nsew', pady=(10, 0))
+    ca_type = t.Checkbutton(frame, variable=check_type, offvalue=0, onvalue=1)
+    ca_type.grid(row=2, column=5, pady=(10, 0))
+
+    la_price = t.Label(frame, text="Price:")
+    la_price.grid(row=3, column=3, sticky='nsew', pady=(10, 0))
+    ea_price = t.Entry(frame, width=30)
+    ea_price.grid(row=3, column=4, sticky='nsew', pady=(10, 0))
+    ca_price = t.Checkbutton(frame, variable=check_price, offvalue=0, onvalue=1)
+    ca_price.grid(row=3, column=5, pady=(10, 0))
+
+    # button
+    addbtn = t.Button(addmain, text='Add', style="big.TButton")
+    addbtn.grid(row=1, column=6, padx=(40, 0),
+                ipadx=20, ipady=15, pady=(10, 10))
+
+    quitbtn = t.Button(addmain, text='Quit', style="big.TButton")
+    quitbtn.grid(row=3, column=6, padx=(40, 0),
+                 ipadx=20, ipady=15, pady=(10, 0))
+
+    def onAdd():
+        if ea_booktit.get() != '' and ea_bookno.get() != '' and ea_author.get() != '' and ea_publish.get() != '' and ea_year.get() != '' and ea_type.get() != '' and ea_price.get() != '':
+            try:
+                print('YEAS')
+                cur.execute(
+                    f'''insert into lib_table values ({int(ea_bookno.get())}, '{ea_booktit.get()}', '{ea_author.get()}', '{ea_publish.get()}', '{ea_year.get()}', '{ea_type.get()}', '{ea_price.get()}');''')
+                db.commit()
+                
+                ea_booktit.delete(0, 'end')
+                ea_bookno.delete(0, 'end')
+
+
+                
+                if check_author.get() == 0:
+                    ea_author.delete(0, 'end')
+                if check_publish.get() == 0:
+                    ea_publish.delete(0, 'end')
+                if check_year.get() == 0:
+                    ea_year.delete(0, 'end')
+                if check_type.get() == 0:
+                    ea_type.delete(0, 'end')
+                if check_price.get() == 0:
+                    ea_price.delete(0, 'end')
+
+                messagebox.showinfo(title='Success',message='The Entry Was Successfully Added.')
+                addmain.lift()
+                count_update()
+
+            except mysql.connector.errors.IntegrityError:
+                print('Book number is not unique')
+                messagebox.showerror("Error", "The Book Number Is Not Unique.")
+                addmain.lift()
+                count_update()
+                
+
+            except:
+                print('The Values entered are Incorrect')
+                messagebox.showerror("Error", "The Values Entered Are Incorrect.")
+                addmain.lift()
+                count_update()
+
+        else:
+            print('no shit')
+
+
+    def debugbtn():
+        print(check_author.get(), check_publish,check_year, check_type, check_price)
+
+    # button configs.get()
+    #quitbtn.configure(command=debugbtn)
+    quitbtn.configure(command=lambda: addmain.destroy())
+    addbtn.configure(command=onAdd)
+
+
+    # Style config
+    style.configure('big.TButton', font=('Oswald', 16))
+    style.map('big.TButton', foreground=[
+            ('active', '#007fff')])
+
+    # end
     addmain.mainloop()
 
 
@@ -351,6 +467,9 @@ table.bind('<<TreeviewSelect>>', sel_ent)
 style.configure('big.TButton', font=('Oswald', 16))
 style.map('big.TButton', foreground=[
           ('active', '#007fff')])
+
+
+# addition_table_btn.invoke()
 
 count_update()
 main.mainloop()
