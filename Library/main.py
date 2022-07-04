@@ -6,7 +6,6 @@ import sys
 from tkinter import messagebox
 
 
-
 # DE FUNC NOT USING TKINTER:
 old_bookno = 0
 
@@ -311,15 +310,12 @@ def add_table_func():
     check_publish = tk.IntVar(master=addmain)
     check_year = tk.IntVar(master=addmain)
     check_type = tk.IntVar(master=addmain)
-    check_price =tk.IntVar(master=addmain)
+    check_price = tk.IntVar(master=addmain)
 
-  
     addmain.title('Addition Window')
     addmain.geometry('1070x370')
     style = t.Style(master=addmain)
     addmain.resizable(False, False)
-
-
 
     add_lbl = t.Label(addmain, text="Add Entries:",
                       font=('HelveticaNeue', 35))
@@ -349,14 +345,16 @@ def add_table_func():
     la_author.grid(row=2, column=0, sticky='nsew', pady=(10, 0))
     ea_author = t.Entry(frame, width=30)
     ea_author.grid(row=2, column=1, sticky='nsew', pady=(10, 0))
-    ca_author = t.Checkbutton(frame, variable=check_author, offvalue=0, onvalue=1)
+    ca_author = t.Checkbutton(
+        frame, variable=check_author, offvalue=0, onvalue=1)
     ca_author.grid(row=2, column=2, pady=(10, 0))
 
     la_publish = t.Label(frame, text="Publisher:")
     la_publish.grid(row=3, column=0, sticky='nsew', pady=(10, 0))
     ea_publish = t.Entry(frame, width=30)
     ea_publish.grid(row=3, column=1, sticky='nsew', pady=(10, 0))
-    ca_publish = t.Checkbutton(frame, variable=check_publish, offvalue=0, onvalue=1)
+    ca_publish = t.Checkbutton(
+        frame, variable=check_publish, offvalue=0, onvalue=1)
     ca_publish.grid(row=3, column=2, pady=(10, 0))
 
     la_year = t.Label(frame, text="Year:")
@@ -377,7 +375,8 @@ def add_table_func():
     la_price.grid(row=3, column=3, sticky='nsew', pady=(10, 0))
     ea_price = t.Entry(frame, width=30)
     ea_price.grid(row=3, column=4, sticky='nsew', pady=(10, 0))
-    ca_price = t.Checkbutton(frame, variable=check_price, offvalue=0, onvalue=1)
+    ca_price = t.Checkbutton(
+        frame, variable=check_price, offvalue=0, onvalue=1)
     ca_price.grid(row=3, column=5, pady=(10, 0))
 
     # button
@@ -396,12 +395,10 @@ def add_table_func():
                 cur.execute(
                     f'''insert into lib_table values ({int(ea_bookno.get())}, '{ea_booktit.get()}', '{ea_author.get()}', '{ea_publish.get()}', '{ea_year.get()}', '{ea_type.get()}', '{ea_price.get()}');''')
                 db.commit()
-                
+
                 ea_booktit.delete(0, 'end')
                 ea_bookno.delete(0, 'end')
 
-
-                
                 if check_author.get() == 0:
                     ea_author.delete(0, 'end')
                 if check_publish.get() == 0:
@@ -413,7 +410,8 @@ def add_table_func():
                 if check_price.get() == 0:
                     ea_price.delete(0, 'end')
 
-                messagebox.showinfo(title='Success',message='The Entry Was Successfully Added.')
+                messagebox.showinfo(
+                    title='Success', message='The Entry Was Successfully Added.')
                 addmain.lift()
                 count_update()
 
@@ -422,31 +420,30 @@ def add_table_func():
                 messagebox.showerror("Error", "The Book Number Is Not Unique.")
                 addmain.lift()
                 count_update()
-                
 
             except:
                 print('The Values entered are Incorrect')
-                messagebox.showerror("Error", "The Values Entered Are Incorrect.")
+                messagebox.showerror(
+                    "Error", "The Values Entered Are Incorrect.")
                 addmain.lift()
                 count_update()
 
         else:
             print('no shit')
 
-
     def debugbtn():
-        print(check_author.get(), check_publish,check_year, check_type, check_price)
+        print(check_author.get(), check_publish,
+              check_year, check_type, check_price)
 
     # button configs.get()
-    #quitbtn.configure(command=debugbtn)
+    # quitbtn.configure(command=debugbtn)
     quitbtn.configure(command=lambda: addmain.destroy())
     addbtn.configure(command=onAdd)
-
 
     # Style config
     style.configure('big.TButton', font=('Oswald', 16))
     style.map('big.TButton', foreground=[
-            ('active', '#007fff')])
+        ('active', '#007fff')])
 
     # end
     addmain.mainloop()
