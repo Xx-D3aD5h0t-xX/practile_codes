@@ -1,5 +1,5 @@
 from datetime import datetime as dt
-x = '2022-01-08'
+x = '2022-07-01'
 
 
 def datecalc(lent):
@@ -33,7 +33,10 @@ def datecalc(lent):
             dadd += 31
 
     curdate = curdate + dadd
-    return(curdate - lent_day)
+    return(curdate - lent_day-7)
 
 
-print(datecalc(x))
+if datecalc(x) <= 0:
+    print('no fien')
+else:
+    print("joe mama's gonna go to jail.")

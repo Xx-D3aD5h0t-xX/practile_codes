@@ -1,4 +1,4 @@
-from tkinter import Button, Label, font, ttk as t
+from tkinter import ttk as t
 import mysql.connector
 import tkinter as tk
 import pyglet
@@ -17,10 +17,11 @@ main.tk.call("set_theme", "dark")
 style = t.Style(master=main)
 
 main.title('Library')
-main.geometry('1100x700')
+main.geometry('1100x720')
+main.resizable(False, False)
 
 db = mysql.connector.connect(
-    host='localhost', user='root', password='negus', db='library')
+    host='127.0.0.1', username='root', password='negus', db='library')
 
 cur = db.cursor()
 cur.execute('select * from lib_table;')
@@ -38,7 +39,7 @@ listofbooks.grid(row=0, column=0, sticky=('nsew'), padx=30, pady=(60, 30))
 # frame creation
 entryFrame = t.Labelframe(main, text='Entry', padding=(10, 10, 10, 10))
 entryFrame.grid(row=1, column=0, sticky='w',
-                padx=(60, 0), rowspan=3, columnspan=4)
+                padx=(60, 0), rowspan=4, columnspan=4)
 
 # Entry widgets
 l_bookno = t.Label(entryFrame, text="Book No:")
@@ -72,11 +73,22 @@ l_type.grid(row=2, column=3, sticky='nsew', padx=(20, 0), pady=(10, 0))
 e_type = t.Entry(entryFrame, width=30)
 e_type.grid(row=2, column=4, sticky='nsew', pady=(10, 0))
 
+l_price = t.Label(entryFrame, text="Price:")
+l_price.grid(row=3, column=0, sticky='nsew', pady=(10, 0))
+e_price = t.Entry(entryFrame, width=30)
+e_price.grid(row=3, column=1, sticky='nsew', pady=(10, 0))
+
+
+l_shelf = t.Label(entryFrame, text="shelf:")
+l_shelf.grid(row=3, column=3, sticky='nsew', padx=(20, 0), pady=(10, 0))
+e_shelf = t.Entry(entryFrame, width=30)
+e_shelf.grid(row=3, column=4, sticky='nsew', pady=(10, 0))
+
 
 # table frame creation
 tableFrame = t.Frame(main)
-tableFrame.grid(row=4, column=0, sticky='nsew', padx=60,
-                pady=30, columnspan=6, rowspan=7)
+tableFrame.grid(row=5, column=0, sticky='nsew', padx=60,
+                pady=15, columnspan=6, rowspan=7)
 
 # scrollbar creation
 scrollbar = t.Scrollbar(tableFrame)
@@ -84,7 +96,8 @@ scrollbar.pack(side="right", fill="y")
 
 
 # table creation
-cols = ('bookno', 'booktit', 'author', 'publisher', 'year', 'type', 'price')
+cols = ('bookno', 'booktit', 'author', 'publisher',
+        'year', 'type', 'price', 'shelf')
 table = t.Treeview(tableFrame, columns=cols, show='headings',
                    height=12, yscrollcommand=scrollbar.set)
 table.pack(expand=True, fill='both')
@@ -96,8 +109,8 @@ scrollbar.config(command=table.yview)
 #    ent.grid(row=i, column=6)
 
 totbkframe = t.Labelframe(
-    main, text='--', padding=(10, 10, 10, 10), width=10, height=10)
-totbkframe.grid(row=1, column=4, sticky='nsew', rowspan=3, columnspan=1)
+    main, text='--', padding=(10, 10, 10, 10), width=10, height=4)
+totbkframe.grid(row=1, column=4, sticky='nsew', rowspan=4, columnspan=1)
 
 
 # define headings:
@@ -108,50 +121,55 @@ table.heading('publisher', text='Publisher')
 table.heading('year', text='Year')
 table.heading('type', text='Type')
 table.heading('price', text='Price')
+table.heading('shelf', text='Shelf')
 
 
 table.column('bookno', width=50, anchor="center")
-table.column('booktit', width=200, anchor="center")
-table.column('author', width=150, anchor="center")
-table.column('publisher', width=140, anchor="center")
+table.column('booktit', width=190, anchor="center")
+table.column('author', width=140, anchor="center")
+table.column('publisher', width=120, anchor="center")
 table.column('year', width=50, anchor="center")
 table.column('type', width=110, anchor="center")
 table.column('price', width=50, anchor="center")
+table.column('shelf', width=40, anchor="center")
 
 
 for x in cur:
-    table.insert('', 'end', values=(x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
+    table.insert('', 'end', values=(
+        x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
 
 
 # buttons
 
 search_btn = t.Button(main, text='Search', style="big.TButton")
-search_btn.grid(row=1, column=6, ipady=10, ipadx=10)
+search_btn.grid(row=1, column=6, ipady=20, ipadx=10)
 
 update_btn = t.Button(main, text='Update', style="big.TButton")
-update_btn.grid(row=3, column=6, ipady=10, ipadx=10)
+update_btn.grid(row=2, column=6, ipady=20, ipadx=10, pady=(10, 0))
 
 
 clear_btn = t.Button(main, text='Clear', style="big.TButton")
-clear_btn.grid(row=4, column=6, ipady=10, ipadx=10, pady=(0, 10))
+clear_btn.grid(row=5, column=6, ipady=10, ipadx=10, pady=(0, 0))
 
 addition_table_btn = t.Button(main, text='Add Entries', style="big.TButton")
-addition_table_btn.grid(row=5, column=6, ipady=10, ipadx=10)
+addition_table_btn.grid(row=7, column=6, ipady=10, ipadx=10)
 
 lending_table_btn = t.Button(main, text='Lending Table', style="big.TButton")
-lending_table_btn.grid(row=6, column=6, ipady=10, ipadx=10)
+lending_table_btn.grid(row=8, column=6, ipady=10, ipadx=10)
 
 quit_btn = t.Button(main, text='Quit', style="big.TButton")
-quit_btn.grid(row=7, column=6, ipady=10, ipadx=10)
+quit_btn.grid(row=9, column=6, ipady=10, ipadx=10)
 quit_btn.configure(command=lambda: sys.exit())
 
 
 tot_l1 = t.Label(totbkframe, text=('Total'), font=('Oswald', 14))
 tot_l1.grid(row=0, column=0, sticky='nesw')
+tot_l4 = t.Label(totbkframe, text=('Number Of'), font=('Oswald', 14),)
+tot_l4.grid(row=1, column=0, sticky='nsew', pady=(8, 0))
 tot_l2 = t.Label(totbkframe, text=('Books:'), font=('Oswald', 14))
-tot_l2.grid(row=1, column=0, sticky='nsew', pady=8)
+tot_l2.grid(row=2, column=0, sticky='nsew', pady=8)
 tot_l3 = t.Label(totbkframe, font=('Oswald', 14))
-tot_l3.grid(row=2, column=0, sticky='nsew')
+tot_l3.grid(row=3, column=0, sticky='nsew')
 
 
 # FUNCTIONS
@@ -190,6 +208,22 @@ def search():
     if e_type.get() != '':
         ext = ext + f' and Type = "{e_type.get()}"'
 
+    # NEW ENTRIES
+    # ---------------OPTIONAL CODE FOR PRICE-----------------
+    # if e_price.get() != '':
+        # if len(e_price.get()) == 1:
+        #ext = ext + f' and price like "{e_price.get()}%"'
+        # else:
+        #ext = ext + f' and price like "%{e_price.get()}%"'
+    if e_price.get() != '':
+        ext = ext + f' and price = "{e_price.get()}"'
+
+    if e_shelf.get() != '':
+        if len(e_shelf.get()) == 1:
+            ext = ext + f' and shelf like "{e_shelf.get()}%"'
+        else:
+            ext = ext + f' and shelf like "%{e_shelf.get()}%"'
+
     query = query + ext
     if query == og:
         q_list = query.split()
@@ -209,7 +243,7 @@ def search():
         table.delete(y)
     for x in cur:
         table.insert('', 'end', values=(
-            x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
+            x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
 
     count_update()
 
@@ -227,6 +261,8 @@ def sel_ent(event):
         e_publish.delete(0, 'end')
         e_year.delete(0, 'end')
         e_type.delete(0, 'end')
+        e_price.delete(0, 'end')
+        e_shelf.delete(0, 'end')
 
         # appending
         e_bookno.insert('end', entry[0])
@@ -235,6 +271,9 @@ def sel_ent(event):
         e_publish.insert('end', entry[3])
         e_year.insert('end', entry[4])
         e_type.insert('end', entry[5])
+        e_price.insert('end', entry[6])
+        e_shelf.insert('end', entry[7])
+
         old_bookno = entry[0]
         print(old_bookno)
 
@@ -260,6 +299,10 @@ def update():
             ext = ext + f', year = "{e_year.get()}"'
         if e_type.get() != '':
             ext = ext + f', Type = "{e_type.get()}"'
+        if e_price.get() != '':
+            ext = ext + f', price = "{e_price.get()}"'
+        if e_shelf.get() != '':
+            ext = ext + f', shelf = "{e_shelf.get()}"'
 
         # str modification
         query = query + ext + f' where Book_No = {old_bookno}'
@@ -280,7 +323,7 @@ def update():
                 table.delete(y)
             for x in cur:
                 table.insert('', 'end', values=(
-                    x[0], x[1], x[2], x[3], x[4], x[5], x[6]))
+                    x[0], x[1], x[2], x[3], x[4], x[5], x[6], x[7]))
             count_update()
 
 
@@ -292,6 +335,8 @@ def clear():
     e_publish.delete(0, 'end')
     e_year.delete(0, 'end')
     e_type.delete(0, 'end')
+    e_price.delete(0, 'end')
+    e_shelf.delete(0, 'end')
     search()
     # hardcoding sum shit cos me dumb to do it the right way
     # fk this shit, this is the right way..
