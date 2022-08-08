@@ -1,4 +1,4 @@
-from tkinter import ttk as t
+from tkinter import DISABLED, ttk as t
 import mysql.connector
 import tkinter as tk
 import pyglet
@@ -212,9 +212,9 @@ def search():
     # ---------------OPTIONAL CODE FOR PRICE-----------------
     # if e_price.get() != '':
         # if len(e_price.get()) == 1:
-        #ext = ext + f' and price like "{e_price.get()}%"'
+        # ext = ext + f' and price like "{e_price.get()}%"'
         # else:
-        #ext = ext + f' and price like "%{e_price.get()}%"'
+        # ext = ext + f' and price like "%{e_price.get()}%"'
     if e_price.get() != '':
         ext = ext + f' and price = "{e_price.get()}"'
 
@@ -381,7 +381,7 @@ def add_table_func():
 
     la_bookno = t.Label(frame, text="Book No:")
     la_bookno.grid(row=1, column=0, sticky='nsew', pady=(10, 0))
-    ea_bookno = t.Entry(frame, width=20)
+    ea_bookno = t.Entry(frame, width=30)
     ea_bookno.grid(row=1, column=1, sticky='nsew')
     ca_bookno = t.Checkbutton(frame, variable=check_bookno, state='disabled')
     ca_bookno.grid(row=1, column=2)
@@ -494,11 +494,87 @@ def add_table_func():
     addmain.mainloop()
 
 
+def lending_table_func():
+    # lending table gui init
+    lendmain = tk.Tk()
+    lendmain.tk.call("source", r".\\library\\azure.tcl")
+    lendmain.tk.call("set_theme", "dark")
+    lendmain.title('Lending Table')
+    lendmain.geometry('1200x720')
+    style = t.Style(master=lendmain)
+    lendmain.resizable(False, False)
+
+    # Checkbutton vars
+    check_lost = tk.IntVar(master=lendmain)
+
+    # MAIN
+    lend_lbl = t.Label(lendmain, text="Lending Table:",
+                       font=('HelveticaNeue', 42))
+    lend_lbl.grid(row=0, column=0, sticky=('nsew'), padx=30, pady=(60, 30))
+
+    entryFrame = t.Labelframe(lendmain, text='Entry', padding=(10, 10, 10, 10))
+    entryFrame.grid(row=1, column=0, sticky='w',
+                    padx=(60, 0), rowspan=4, columnspan=5)
+
+    # Entry widgets
+    bktitframe = t.Frame(entryFrame)
+    bktitframe.grid(row=0, column=0, rowspan=1, columnspan=4, pady=(0, 10))
+    l_booktit = t.Label(bktitframe, text="Book Title:")
+    l_booktit.grid(row=0, column=0, sticky='nsew', pady=(10, 0))
+    e_booktit = t.Entry(bktitframe, width=85)
+    e_booktit.grid(row=0, column=1, sticky='nsew', pady=(10, 0))
+
+    l_bookno = t.Label(entryFrame, text="Book No:")
+    l_bookno.grid(row=1, column=0, sticky='nsew', pady=(10, 0))
+    e_bookno = t.Entry(entryFrame, width=25)
+    e_bookno.grid(row=1, column=1, sticky='nsew', pady=(10, 0))
+
+    l_stuname = t.Label(entryFrame, text="Student Name:")
+    l_stuname.grid(row=1, column=2, sticky='nsew', pady=(10, 0), padx=(20, 0))
+    e_stuname = t.Entry(entryFrame, width=25)
+    e_stuname.grid(row=1, column=3, sticky='nsew', pady=(10, 0))
+
+    l_roll = t.Label(entryFrame, text="Roll No:")
+    l_roll.grid(row=2, column=0, sticky='nsew', pady=(10, 0))
+    e_roll = t.Entry(entryFrame, width=25)
+    e_roll.grid(row=2, column=1, sticky='nsew', pady=(10, 0))
+
+    l_class = t.Label(entryFrame, text="Class:")
+    l_class.grid(row=2, column=2, sticky='nsew', pady=(10, 0), padx=(20, 0))
+    e_class = t.Entry(entryFrame, width=25)
+    e_class.grid(row=2, column=3, sticky='nsew', pady=(10, 0))
+
+    l_date = t.Label(entryFrame, text="Date Of Borrowing:")
+    l_date.grid(row=3, column=0, sticky='nsew', pady=(10, 0))
+    e_date = t.Entry(entryFrame, width=25)
+    e_date.grid(row=3, column=1, sticky='nsew', pady=(10, 0))
+
+    l_leftdays = t.Label(entryFrame, text="Days Left:")
+    l_leftdays.grid(row=3, column=2, sticky='nsew', pady=(10, 0), padx=(20, 0))
+    e_leftdays = t.Entry(entryFrame, width=25)
+    e_leftdays.grid(row=3, column=3, sticky='nsew', pady=(10, 0))
+
+    l_fine = t.Label(entryFrame, text="Fine:")
+    l_fine.grid(row=4, column=0, sticky='nsew', pady=(10, 0), padx=(20, 0))
+    e_fine = t.Entry(entryFrame, width=25)
+    e_fine.grid(row=4, column=1, sticky='nsew', pady=(10, 0))
+
+    l_lost = t.Label(entryFrame, text="Is Lost:")
+    l_lost.grid(row=4, column=2, sticky='nsew', pady=(10, 0), padx=(20, 0))
+    c_lost = t.Checkbutton(
+        entryFrame, variable=check_lost, offvalue=0, onvalue=1)
+    c_lost.grid(row=4, column=3, sticky='nsew', pady=(10, 0), padx=(90, 0))
+
+    # End
+    lendmain.mainloop()
+
+
 # CONFIGUATIONS
 search_btn.configure(command=search)
 update_btn.configure(command=update)
 clear_btn.configure(command=clear)
 addition_table_btn.configure(command=add_table_func)
+lending_table_btn.configure(command=lending_table_func)
 
 
 # TREEVIEW FUNCTIONS
