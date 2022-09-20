@@ -1,29 +1,25 @@
-# Second Code
+my_file=open(r"./proj2.txt","r")
+vow=con=up=lc=0
+b=my_file.read()
 
-vowelCount = 0
-consoCount = 0
-upperCount = 0
-lowerCount = 0
+for i in b:
+    if i.isalpha():
+        if i in ['a','e','i','o','u','A','E','I','O','U'] :
+            vow+=1
+        else:
+            con+=1
+    if i.isupper():
+        up+=1
+    elif i.islower():
+        lc+=1
 
-
-file = open(r'./proj.txt', 'r')
-x = file.read()
-for i in range(0, len(x)):
-
-    if x[i] in 'aeiou':
-        vowelCount += 1
-
-    if x[i] not in 'aeiou1234567890, ./"()[]}{':
-        consoCount += 1
-
-    if x[i].isupper():
-        upperCount += 1
-
-    if x[i].islower():
-        lowerCount += 1
+print('Original String:', b)
+print("No. Of Vowels",vow)
+print("No. Of Consonants",con)
+print("No. Of UpperCase",up)
+print("No. Of LowerCase",lc)
 
 
-print('Vowels:', vowelCount)
-print('Consonant:', consoCount)
-print('Upper:', upperCount)
-print('Lower:', lowerCount)
+
+
+

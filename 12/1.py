@@ -1,2 +1,4 @@
-print(((open(r'.\12\proj1.txt', 'r'))).read().replace(' ', '#'))
-# De One Lino Code
+file = open(r'.\proj1.txt', 'r')
+fileObj = file.read()
+x = fileObj.replace(' ', '#')
+print(x)
