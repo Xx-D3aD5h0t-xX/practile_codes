@@ -17,3 +17,5 @@ delete from scholar where roll=5;
 select * from scholar where roll =5;
 
 select * from scholar;
+
+alter table scholar modify phone int(11);

@@ -6,7 +6,7 @@ from tkinter import messagebox as mb
 
 import mysql.connector
 sql = mysql.connector.connect(
-    host="localhost", user="root", passwd="negus", database="scholar")
+    host="localhost", user="root", passwd="root", database="scholar")
 cursor = sql.cursor()
 
 
@@ -61,73 +61,159 @@ def RemoveScholar():  # removing scholar function
 # search scholar functions
 
 
+# for reference
+#(123, 'ad', 'abc', 'sd', 5, 123123, 5, 123)
+
+# empty => SyntaxError
+# not in sql => TypeError
+
+def searchRes(tup):
+    # making all entries editable
+    se1.configure(state=NORMAL)
+    se2.configure(state=NORMAL)
+    se3.configure(state=NORMAL)
+    se4.configure(state=NORMAL)
+    se5.configure(state=NORMAL)
+    se6.configure(state=NORMAL)
+    se7.configure(state=NORMAL)
+    se8.configure(state=NORMAL)
+
+    # deleting all the prev inserted entries
+    se1.delete(0, END)
+    se2.delete(0, END)
+    se3.delete(0, END)
+    se4.delete(0, END)
+    se5.delete(0, END)
+    se6.delete(0, END)
+    se7.delete(0, END)
+    se8.delete(0, END)
+
+    # inserting values
+    se1.insert(1, tup[0])
+    se2.insert(1, tup[1])
+    se3.insert(1, tup[2])
+    se4.insert(1, tup[3])
+    se5.insert(1, tup[4])
+    se6.insert(1, tup[5])
+    se7.insert(1, tup[6])
+    se8.insert(1, tup[7])
+
+    # making entries uneditable
+    se1.configure(state=DISABLED)
+    se2.configure(state=DISABLED)
+    se3.configure(state=DISABLED)
+    se4.configure(state=DISABLED)
+    se5.configure(state=DISABLED)
+    se6.configure(state=DISABLED)
+    se7.configure(state=DISABLED)
+    se8.configure(state=DISABLED)
+
+# bug fixing
+
+
+def disableEntries():
+    se1.configure(state=DISABLED)
+    se2.configure(state=DISABLED)
+    se3.configure(state=DISABLED)
+    se4.configure(state=DISABLED)
+    se5.configure(state=DISABLED)
+    se6.configure(state=DISABLED)
+    se7.configure(state=DISABLED)
+    se8.configure(state=DISABLED)
+
+
 def search1():
-    n = str(e13.get())    # str instead of eval
-    cursor.execute("select * from scholar where name='{}'".format(n))
-    r = ShowResult()
-    e13.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = str(e13.get())    # str instead of eval
+        cursor.execute("select * from scholar where name='{}'".format(n))
+        r = ShowResult()
+        e13.delete(0, END)
+    except:
+        disableEntries()
 
 
 def search2():
-    n = str(e15.get())
-    cursor.execute("select * from scholar where city = '{}'".format(n))
-    r = ShowResult()
-    e15.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = str(e15.get())
+        cursor.execute("select * from scholar where city = '{}'".format(n))
+        r = ShowResult()
+        e15.delete(0, END)
+        searchRes(r)
+    except:
+        disableEntries()
 
 
 def search3():
-    n = eval(e14.get())
-    cursor.execute("select * from scholar where age={}".format(n))
-    r = ShowResult()
-    e14.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e14.get())
+        cursor.execute("select * from scholar where age={}".format(n))
+        r = ShowResult()
+        e14.delete(0, END)
+        searchRes(r)
+
+    except:
+        disableEntries()
 
 
 def search4():
-    n = eval(e16.get())
-    cursor.execute("select * from scholar where class = {}".format(n))
-    r = ShowResult()
-    e16.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e16.get())
+        cursor.execute("select * from scholar where class = {}".format(n))
+        r = ShowResult()
+        e16.delete(0, END)
+        searchRes(r)
+    except:
+        disableEntries()
 
 
 def search5():
-    n = eval(e17.get())
-    cursor.execute("select * from scholar where phone= '{}'".format(n))
-    r = ShowResult()
-    e17.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e17.get())
+        cursor.execute("select * from scholar where phone= '{}'".format(n))
+        r = ShowResult()
+        e17.delete(0, END)
+        searchRes(r)
+    except:
+        disableEntries()
 
 
 def search6():
-    n = eval(e18.get())
-    cursor.execute("select * from scholar where address = '{}'".format(n))
-    r = ShowResult()
-    e18.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e18.get())
+        cursor.execute("select * from scholar where address = '{}'".format(n))
+        r = ShowResult()
+        e18.delete(0, END)
+        searchRes(r)
+    except:
+        disableEntries()
 
 
 def search7():
-    n = eval(e19.get())
-    cursor.execute("select * from scholar where regfee = {}".format(n))
-    r = ShowResult()
-    e19.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e19.get())
+        cursor.execute("select * from scholar where regfee = {}".format(n))
+        r = ShowResult()
+        e19.delete(0, END)
+        searchRes(r)
+    except:
+        disableEntries()
 
 
 def search8():
-    n = eval(e12.get())
-    cursor.execute("select * from scholar where roll={}".format(n))
-    r = ShowResult()
-    e12.delete(0, END)
-    res.configure(text=str(r))
+    try:
+        n = eval(e12.get())
+        cursor.execute("select * from scholar where roll={}".format(n))
+        r = ShowResult()
+        e12.delete(0, END)
+        searchRes(r)
+
+    except:
+        disableEntries()
 
 
 win = Tk()
 win.title("SCHOLAR")
-win.geometry("750x750")
+win.geometry("750x550")
 win.configure(bg="#efd3f5")
 
 l1 = Label(win, text=' .-.-.-.-.-.-.-.-.-.- SCHOLAR MANAGEMENT SYSTEM -.-.-.-.-.-.-.-.-.-.-.',
@@ -196,13 +282,13 @@ b2 = Button(win, text="REMOVE", command=RemoveScholar,
 
 l10 = Label(win, text="SEARCH SCHOLARS", font=("Arial"),
             foreground="#de0a6f", background="#ffff80")
-l10.place(x=2, y=275)
+l10.place(x=2, y=265)
 
 l20 = Label(win, text="REQUIRED RECORD", font=("Arial"), background="green")
-l20.place(x=500, y=275)
+l20.place(x=500, y=265)
 
-res = Label(win, text="SCHOLAR")
-res.place(x=500, y=400)
+#res = Label(win, text="SCHOLARasdf")
+#res.place(x=500, y=400)
 
 
 l12 = Label(win, text="SEARCH SCHOLAR VIA ROLL NO HERE")
@@ -260,6 +346,66 @@ e19 = Entry(win)
 e19.place(x=250, y=510)
 b10 = Button(win, text="SEARCH", command=search7,
              background='#fab830').place(x=375, y=510)
+
+# labels for search menu
+sl1 = Label(win, text='ROLL NO.')
+sl1.place(x=500, y=300)
+
+sl2 = Label(win, text='NAME.')
+sl2.place(x=500, y=330)
+
+sl3 = Label(win, text='AGE')
+sl3.place(x=500, y=360)
+
+sl4 = Label(win, text='CITY')
+sl4.place(x=500, y=390)
+
+sl5 = Label(win, text='CLASS')
+sl5.place(x=500, y=420)
+
+sl6 = Label(win, text='PHONE NO.')
+sl6.place(x=500, y=450)
+
+sl7 = Label(win, text='ADDRESS')
+sl7.place(x=500, y=480)
+
+sl8 = Label(win, text='REG. FEE')
+sl8.place(x=500, y=510)
+
+# result labels
+
+se1 = Entry(win, width=17)
+se1.place(x=590, y=300)
+se1.configure(state=DISABLED)
+
+
+se2 = Entry(win, width=17)
+se2.place(x=590, y=330)
+se2.configure(state=DISABLED)
+
+se3 = Entry(win, width=17)
+se3.place(x=590, y=360)
+se3.configure(state=DISABLED)
+
+se4 = Entry(win, width=17)
+se4.place(x=590, y=390)
+se4.configure(state=DISABLED)
+
+se5 = Entry(win, width=17)
+se5.place(x=590, y=420)
+se5.configure(state=DISABLED)
+
+se6 = Entry(win, width=17)
+se6.place(x=590, y=450)
+se6.configure(state=DISABLED)
+
+se7 = Entry(win, width=17)
+se7.place(x=590, y=480)
+se7.configure(state=DISABLED)
+
+se8 = Entry(win, width=17)
+se8.place(x=590, y=510)
+se8.configure(state=DISABLED)
 
 '''canvas = Canvas(win, width = 300, height = 300)  
 canvas.pack()  
