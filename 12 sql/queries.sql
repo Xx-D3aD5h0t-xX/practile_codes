@@ -1,4 +1,4 @@
--- Active: 1663667278013@@127.0.0.1@3306@paris
+-- Active: 1663667278013@@127.0.0.1@3306@practical
 
 select * from items;
 
@@ -39,3 +39,5 @@ UPDATE student set admno = 3021 where Roll = 1;
 DELETE from student where Roll = 21;
 
 select * from student GROUP BY(marks);
+
+select avg(marks) from student;
