@@ -1,9 +1,10 @@
--- Active: 1662631171343@@127.0.0.1@3306@grocery
+-- Active: 1664381156085@@127.0.0.1@3306@grocery
 
 create table
     item_list (
         sno int(5) AUTO_INCREMENT PRIMARY KEY,
         name varchar(60),
+        quan int,
         price DECIMAL(7, 2)
     );
 
@@ -14,8 +15,8 @@ select * from item_list;
 drop table item_list;
 
 insert into
-    item_list(name, price)
-values ('Chips', 10.00), ('Eggs', 12.00);
+    item_list(name, quan, price)
+values ('Chips', 100, 10.00), ('Eggs', 200, 12.00);
 
 create table
     history(

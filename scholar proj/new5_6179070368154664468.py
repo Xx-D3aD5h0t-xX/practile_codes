@@ -18,7 +18,8 @@ def RegisterScholar():
     g = f8.get()   # age int
     h = f9.get()  # reg fee  int
     try:
-        cursor.execute("insert into scholar(roll,address,name,city,class,phone,age,regfee) values({},'{}','{}','{}',{},'{}',{},{})".format(
+        cursor.execute("""insert into scholar(roll,address,name,city,class,phone,age,regfee)
+                       values({},'{}','{}','{}',{},'{}',{},{})""".format(
             a, b, c, d, e, f, g, h))
         sql.commit()
         f2.delete(0, END)
@@ -211,8 +212,6 @@ win.configure(bg="#efd3f5")
 l1 = Label(win, text=' .-.-.-.-.-.-.-.-.-.- SCHOLAR MANAGEMENT SYSTEM -.-.-.-.-.-.-.-.-.-.-.',
            background="black", foreground="white", font=("algerian", 20))
 l1.place(x=2, y=2)
-
-
 #labels and buttons
 l = Label(win, text="SCHOLAR REGISTRATION ZONE", font=(
     "Arial"), foreground="#de0a6f", background="#ffff80")
@@ -271,7 +270,6 @@ e11 = Entry(win)
 e11.place(x=375, y=228)
 b2 = Button(win, text="REMOVE", command=RemoveScholar,
             background='cyan').place(x=510, y=225)
-
 l10 = Label(win, text="SEARCH SCHOLARS", font=("Arial"),
             foreground="#de0a6f", background="#ffff80")
 l10.place(x=2, y=265)
@@ -359,13 +357,11 @@ sl7.place(x=500, y=480)
 
 sl8 = Label(win, text='REG. FEE')
 sl8.place(x=500, y=510)
-
 # result labels
 
 se1 = Entry(win, width=17)
 se1.place(x=590, y=300)
 se1.configure(state=DISABLED)
-
 
 se2 = Entry(win, width=17)
 se2.place(x=590, y=330)
@@ -393,6 +389,5 @@ se7.configure(state=DISABLED)
 
 se8 = Entry(win, width=17)
 se8.place(x=590, y=510)
-se8.configure(state=DISABLED)
-
+se8.configure(state=DISABLED)   
 win.mainloop()

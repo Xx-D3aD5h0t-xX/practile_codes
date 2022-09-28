@@ -1,5 +1,4 @@
 import mysql.connector as mc
-import getpass as gp
 import datetime
 import hashlib as h
 from tabulate import tabulate as table
@@ -10,15 +9,23 @@ cur = db.cursor()
 
 
 # FUNCTIONS
+def itemAvail(itemName):
+    cur.execute('select name from item_list;')
+    l = cur.fetchall()
+    for i in l:
+        if str(i[0]).lower() == itemName:
+            return True
+    else:
+        return False
 
 
-print("**** WELCOME TO THE STASH!! ****\n")
+print("\t**** WELCOME TO THE STASH!! ****\n")
 name = input(">> Please Enter Your Name:: ")
 # --------------------------------ADMIN----------------------------------
 if name == 'admin':
-    passwd = gp.getpass(prompt=">> Please Enter the Password: ")
-    if h.sha1(passwd.encode('utf-8')).hexdigest() == 'e346f201d9272e2ea204e5128e5205193dd1afe6':
-        print('como estas nigro')
+    passwd = input('Enter The Password: ')
+    if h.sha1(passwd.encode('utf-8')).hexdigest() == 'dc76e9f0c0006e8f919e0c515c66dbba3982f785':
+
         ques = input('''Enter:
         1) To Add Items. 
         2) To Print History.
@@ -26,7 +33,21 @@ if name == 'admin':
         4) To Quit. \n\n   ==>  ''')
 
         if ques == '1':
-            pass
+            inpItem = input('Enter Name of Item: ')
+            if itemAvail(inpItem):
+                inpQuan = input('Add Quantity: ')
+                cur.execute(
+                    f"""update item_list set quan = quan+{inpQuan} where name = '{inpItem}';""")
+                db.commit()
+
+            else:
+                inpQuan = int(input('Enter Quantity: '))
+                inpPrice = float(input('Enter Price: '))
+                cur.execute(
+                    f"""insert into item_list(name, quan, price) values('{inpItem}', {inpQuan}, {inpPrice})""")
+                db.commit()
+            print('\nItem Added Successfully!')
+
         if ques == '2':
             l = []
             cur.execute('select * from history;')
@@ -44,31 +65,51 @@ if name == 'admin':
         else:
             sys.exit()
     else:
-        print('gtfo')
+        print('Incorrect Password Entered..')
 
 
 # ------------------------------CUSTOMER---------------------------------
 else:
     phno = input(">> Please Enter your Phone Number:: ")
-    print(f"\n***** Hello {name} *****")
+    print(f"\n\t***** Hello {name} *****")
     l = []
     history_l = []
     total = 0
     loop = True
+
+    # list and instructions:
+    print('\n>> List Of Available Items <<')
+    cur.execute('select name, price, quan from item_list;')
+    allItems = []
+    for x in cur:
+        allItems.append(x)
+    print()
+    print(table(allItems, headers=['Item', 'Price', 'Quantity']))
+    print('\n>> Please Enter "list" for list of Items..')
+
     while loop:
         item = input('\n>> Enter Name of Item:: ')
 
         if item.lower() != 'list':
             cur.execute(f"select * from item_list where name = '{item}';")
-            price = cur.fetchone()
+            ret = cur.fetchone()
 
             try:
-                price = float(price[2])
+                price = float(ret[3])
+                remQuan = float(ret[2])
                 quan = int(input('>> Add Quantity:: '))
-                cum_price = price * quan
+                if quan <= remQuan:
+                    remQuan = remQuan - quan
+                    cur.execute(
+                        f"update item_list set quan = {remQuan} where name = '{item}';")
+                else:
+                    print('Not Enough Quantity Present.')
+                    continue
+
+                net_price = price * quan
                 historyStr = item + f'({quan})'
                 history_l.append(historyStr)
-                l.append([item, quan, price, cum_price])
+                l.append([item, quan, price, net_price])
                 total += quan*price
 
                 ques = input('>> Do you wish to Proceed (Y/N):: ')
@@ -79,7 +120,7 @@ else:
 
             except:
                 print("__ Item doesn't exist __")
-                print('>>Please Enter "list" for list of Items..')
+                print('>> Please Enter "list" for list of Items..')
                 ques = input('>> Do you wish to Proceed (Y/N):: ')
                 if ques.lower() == 'y':
                     pass
@@ -87,12 +128,12 @@ else:
                     loop = False
 
         if item.lower() == 'list':
-            cur.execute('select name, price from item_list;')
+            cur.execute('select name, price, quan from item_list;')
             allItems = []
             for x in cur:
                 allItems.append(x)
             print()
-            print(table(allItems, headers=['Item', 'Price']))
+            print(table(allItems, headers=['Item', 'Price', 'Quantity']))
 
     print('\n')
     print('\n')
@@ -102,7 +143,7 @@ else:
     print(f'Name: {name}')
     print(f'Phone No: {phno}')
     print(f'Date: {datetime.datetime.now().date()}\n')
-    print(table(l, headers=['Item', "Quantity", "Price", "Cum_Price"]))
+    print(table(l, headers=['Item', "Quantity", "Price", "Net_Price"]))
     print()
     print('\t    Total:: ', total, '\n')
     print('Thank You For Shopping With Us!')
