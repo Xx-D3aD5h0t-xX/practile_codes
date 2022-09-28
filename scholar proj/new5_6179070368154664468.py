@@ -1,12 +1,10 @@
 # the gui for scholar project
 from tkinter import *
-'''from PIL import ImageTk,Image'''
-from tkinter import colorchooser  # sub module
 from tkinter import messagebox as mb
 
 import mysql.connector
 sql = mysql.connector.connect(
-    host="localhost", user="root", passwd="root", database="scholar")
+    host="localhost", user="root", passwd="negus", database="scholar")
 cursor = sql.cursor()
 
 
@@ -60,12 +58,6 @@ def RemoveScholar():  # removing scholar function
 
 # search scholar functions
 
-
-# for reference
-#(123, 'ad', 'abc', 'sd', 5, 123123, 5, 123)
-
-# empty => SyntaxError
-# not in sql => TypeError
 
 def searchRes(tup):
     # making all entries editable
@@ -287,10 +279,6 @@ l10.place(x=2, y=265)
 l20 = Label(win, text="REQUIRED RECORD", font=("Arial"), background="green")
 l20.place(x=500, y=265)
 
-#res = Label(win, text="SCHOLARasdf")
-#res.place(x=500, y=400)
-
-
 l12 = Label(win, text="SEARCH SCHOLAR VIA ROLL NO HERE")
 l12.place(x=2, y=300)
 e12 = Entry(win)
@@ -406,11 +394,5 @@ se7.configure(state=DISABLED)
 se8 = Entry(win, width=17)
 se8.place(x=590, y=510)
 se8.configure(state=DISABLED)
-
-'''canvas = Canvas(win, width = 300, height = 300)  
-canvas.pack()  
-img = ImageTk.PhotoImage(Image.open("ball.png"))  
-canvas.create_image(700, 60, anchor=NW, image=img)'''
-
 
 win.mainloop()
