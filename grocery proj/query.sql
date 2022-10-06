@@ -1,4 +1,4 @@
--- Active: 1664381156085@@127.0.0.1@3306@grocery
+-- Active: 1664971720388@@127.0.0.1@3306@grocery
 
 create table
     item_list (
@@ -16,15 +16,30 @@ drop table item_list;
 
 insert into
     item_list(name, quan, price)
-values ('Chips', 100, 10.00), ('Eggs', 200, 12.00);
+values ('Chips', 100, 10.00), ('Eggs', 200, 12.00), ("Chocolate", 250, 10.00), ("Bread", 50, 45.00), ("Milk", 70, 17.50), ("Cold Drinks", 50, '40.00');
+
+insert into
+    history(name, phone_no, items, total)
+values (
+        'man',
+        7636576365,
+        '["doesnt matter"]',
+        133
+    );
 
 create table
     history(
         name VARCHAR(100),
-        phone_no int(10),
+        phone_no bigint,
         date date DEFAULT(curdate()),
         items varchar(10000),
         total decimal(8, 2)
     );
 
 select * from history;
+
+drop table history;
+
+desc item_list;
+
+desc history;

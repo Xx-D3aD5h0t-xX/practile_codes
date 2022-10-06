@@ -71,7 +71,10 @@ if name == 'admin':
 # ------------------------------CUSTOMER---------------------------------
 else:
     phno = input(">> Please Enter your Phone Number:: ")
+    phno = phno.strip()
+    print(phno)
     print(f"\n\t***** Hello {name} *****")
+
     l = []
     history_l = []
     total = 0
@@ -151,5 +154,5 @@ else:
 
     # history dump
     cur.execute(
-        f'''insert into history(name, phone_no, items, total) values ("{name}", "{phno}", "{history_l}", {total});''')
+        f'''insert into history(name, phone_no, items, total) values ("{name}", {int(phno)}, "{history_l}", {total});''')
     db.commit()

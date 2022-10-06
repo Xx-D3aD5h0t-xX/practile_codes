@@ -1,4 +1,4 @@
-import pickle as p
-
-f = open(r'pass.txt', 'rb')
-print(p.load(f))
+x = "   132  "
+y = x.strip()
+print(x)
+print(y)

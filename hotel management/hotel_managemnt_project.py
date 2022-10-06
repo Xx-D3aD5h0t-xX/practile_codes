@@ -12,8 +12,9 @@ def add_customer():
     a3 = input("Enter phone number ")
     a4 = input("Enter address ")
     a5 = input("Enter email ")
-    cursor.execute("insert into c_details values(%s,%s,%s,%s,%s)",
-                   (a1, a2, a3, a4, a5))
+    cursor.execute(
+        """insert into c_details(c_id,c_name,c_phno,c_address,c_email) 
+            values(%s,%s,%s,%s,%s)""", (a1, a2, a3, a4, a5))
     mycon.commit()
 
 
@@ -26,11 +27,11 @@ def show_all():
 
 
 def select_service():
-    e = input(''' Welcome !!! \n
+    e = int(input(''' Welcome !!! \n
     Enter 1 for room \n
     Enter 2 for restaurant \n
     Enter 3 for pool \n
-    ''')
+    '''))
     if e == 1:
         room()
     elif e == 2:
@@ -44,30 +45,24 @@ def restaurant():
     1. Veg combo - 300 \n
     2. Non veg combo - 500 \n
     3. Chinese - 800\n
-    4. Italian - 700 \n
-    5. Russian - 600\n''')
+    4. Italian - 700 \n''')
     e = int(input("Enter choice "))
     eid = input("Enter customer id ")
     if e == 1:
         cursor.execute(
-            "update booking_record set restaurant = %s where c_id = %s", (300, eid))
+            "update c_details set restaurant = %s where c_id = %s", (300, eid))
         mycon.commit()
     elif e == 2:
         cursor.execute(
-            "update booking_record set restaurant = %s where c_id = %s", (500, eid))
+            "update c_details set restaurant = %s where c_id = %s", (500, eid))
         mycon.commit()
     elif e == 3:
         cursor.execute(
-            "update booking_record set restaurant = %s where c_id = %s", (800, eid))
+            "update c_details set restaurant = %s where c_id = %s", (800, eid))
         mycon.commit()
     elif e == 4:
         cursor.execute(
-            "update booking_record set restaurant = %s where c_id = %s", (700, eid))
-        mycon.commit()
-
-    elif e == 4:
-        cursor.execute(
-            "update booking_record set restaurant = %s where c_id = %s", (600, eid))
+            "update c_details set restaurant = %s where c_id = %s", (700, eid))
         mycon.commit()
 
 
@@ -76,9 +71,9 @@ def pool():
     Price = Rs. 1000
     Enter ID of customer. \n ''')
     cursor.execute(
-        "update booking_record set pool = pool + 1000 where c_id = '{}'".format(n))
+        "update c_details set pool = pool + 1000 where c_id = '{}'".format(n))
     mycon.commit()
-    cursor.execute("update booking_record set total = total + pool")
+    cursor.execute("update c_details set total = total + pool")
     mycon.commit()
 
 
@@ -93,37 +88,37 @@ def room():
     eid = input("Enter customer id ")
     if e == 1:
         cursor.execute(
-            "update booking_record set room = %s where c_id = %s", (3000, eid))
+            "update c_details set room = %s where c_id = %s", (3000, eid))
         mycon.commit()
     elif e == 2:
         cursor.execute(
-            "update booking_record set room = %s where c_id = %s", (2500, eid))
+            "update c_details set room = %s where c_id = %s", (2500, eid))
         mycon.commit()
     elif e == 3:
         cursor.execute(
-            "update booking_record set room = %s where c_id = %s", (2000, eid))
+            "update c_details set room = %s where c_id = %s", (2000, eid))
         mycon.commit()
     elif e == 4:
         cursor.execute(
-            "update booking_record set room = %s where c_id = %s", (1000, eid))
+            "update c_details set room = %s where c_id = %s", (1000, eid))
         mycon.commit()
 
 
 def view_bill():
     n = input("Enter customer id\n")
-    cursor.execute("update booking_record set total = restaurant+pool+room")
+    cursor.execute("update c_details set total = restaurant+pool+room")
     mycon.commit()
-    cursor.execute("select total from booking_record where c_id = %s", (n))
+    cursor.execute("select total from c_details where c_id = '{}'".format(n))
     e = cursor.fetchone()
-    print("Bill for customer", n, "is as follows : \n")
-    print(e)
+    print("Bill for customer is as follows : ", str(e))
 
 
 def see_customer():
     e = input("Enter id of customer ")
-    cursor.execute("select * from c_details where c_id = %s", (e))
+    cursor.execute(
+        "select c_id,c_name,c_phno,c_address,c_email from c_details where c_id ='{}'".format(e))
     i = cursor.fetchall()
-    print("ID", "Name", "Phone", "Address", "E-mail")
+    print(["ID", "Name", "Phone", "Address", "E-mail"])
     print(i)
 
 
