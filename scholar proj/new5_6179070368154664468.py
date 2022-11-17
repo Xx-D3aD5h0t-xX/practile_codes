@@ -39,7 +39,7 @@ def RegisterScholar():
 def ShowResult():
     r = cursor.fetchall()
     for i in r:
-        return(i)
+        return (i)
 
 
 def RemoveScholar():  # removing scholar function
@@ -83,12 +83,12 @@ def searchRes(tup):
 
     # inserting values
     se1.insert(1, tup[0])
-    se2.insert(1, tup[1])
-    se3.insert(1, tup[2])
+    se2.insert(1, tup[2])
+    se3.insert(1, tup[6])
     se4.insert(1, tup[3])
     se5.insert(1, tup[4])
     se6.insert(1, tup[5])
-    se7.insert(1, tup[6])
+    se7.insert(1, tup[1])
     se8.insert(1, tup[7])
 
     # making entries uneditable
@@ -389,5 +389,5 @@ se7.configure(state=DISABLED)
 
 se8 = Entry(win, width=17)
 se8.place(x=590, y=510)
-se8.configure(state=DISABLED)   
+se8.configure(state=DISABLED)
 win.mainloop()

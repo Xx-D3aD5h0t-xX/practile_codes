@@ -1,4 +1,4 @@
--- Active: 1663667278013@@127.0.0.1@3306@scholar
+-- Active: 1668699959085@@127.0.0.1@3306@scholar
 
 create table
     scholar(
@@ -18,4 +18,4 @@ select * from scholar where roll =5;
 
 select * from scholar;
 
-alter table scholar modify phone int(11);
+alter table scholar modify phone BIGINT;
